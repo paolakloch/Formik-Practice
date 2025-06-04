@@ -5,7 +5,7 @@ import { ListaSupensa } from "../../componentes/ListaSuspensa/ListaSuspensa";
 import { Col, Row } from "react-grid-system";
 import { Botao } from "../../componentes/Botao/Botao";
 import { Link } from "react-router-dom";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 
 const estadosBrasileiros = [
   { text: "Acre", value: "AC" },
@@ -48,6 +48,39 @@ const DadosPessoais = () => {
         senha: "",
         confirmarSenha: "",
       }}
+      validate={(values) => {
+        const errors = {};
+        if (!values.nome) {
+          errors.nome = "Campo Obrigatório";
+        }
+        if (!values.estado) {
+          errors.estado = "Campo Obrigatório";
+        }
+        if (!values.cidade) {
+          errors.cidade = "Campo Obrigatório";
+        }
+        if (!values.email) {
+          errors.email = "Campo Obrigatório";
+        } else if (
+          !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(values.email)
+        ) {
+          errors.email = "Email inválido";
+        }
+        if (!values.telefone) {
+          errors.telefone = "Campo Obrigatório";
+        } else if (!/^\d{11}$/.test(values.telefone)) {
+          errors.telefone = "Telefone inválido";
+        }
+        if (!values.senha) {
+          errors.senha = "Campo Obrigatório";
+        }
+        if (!values.confirmarSenha) {
+          errors.confirmarSenha = "Campo Obrigatório";
+        } else if (values.senha !== values.confirmarSenha) {
+          errors.confirmarSenha = "As senhas não conferem";
+        }
+        return errors;
+      }}
     >
       {(formik) => (
         <Form onSubmit={formik.handleSubmit}>
@@ -68,13 +101,7 @@ const DadosPessoais = () => {
           </Row>
           <Row>
             <Col lg={4} md={4} sm={4}>
-              <ListaSupensa
-                titulo="Estado"
-                opcoes={estadosBrasileiros}
-                valor={formik.values.estado}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
+              <ListaSupensa titulo="Estado" opcoes={estadosBrasileiros} />
             </Col>
             <Col lg={8} md={8} sm={8}>
               <CampoTexto titulo="Cidade" name="cidade" type="text" />
@@ -108,7 +135,7 @@ const DadosPessoais = () => {
             </Col>
             <Col lg={6} md={6} sm={6}>
               <div style={{ textAlign: "right" }}>
-                {/* <Link to='/cadastro/concluido'> */}
+                {/* <Link to="/cadastro/concluido"> */}
                 <Botao>Próxima</Botao>
                 {/* </Link> */}
               </div>

@@ -1,15 +1,15 @@
 import Radio from "./Radio";
 
-const GrupoRadio = ({ opcoes, valor, onChange }) => {
+const GrupoRadio = ({ opcoes }) => {
   return (
     <div>
       {opcoes.map((option) => (
         <Radio
           key={option.valor}
-          valor={option.valor}
+          value={option.label}
           label={option.label}
-          checked={option.valor === valor}
-          onClick={() => onChange(option.valor)}
+          checked={option.label === values.interesse}
+          name="interesse"
         />
       ))}
     </div>
